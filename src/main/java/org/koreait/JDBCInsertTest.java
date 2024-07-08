@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-//쿼리가 작접 실행되는가..
 public class JDBCInsertTest {
     public static void main(String[] args) {
         Connection conn = null;
@@ -22,16 +21,14 @@ public class JDBCInsertTest {
             sql += "SET regDate = NOW(),";
             sql += "updateDate = NOW()," ;
             sql += "title = CONCAT('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),";
-            sql += "`body` = CONCAT('내용1', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));";
+            sql += "`body` = CONCAT('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));";
 
             System.out.println(sql);
 
             pstmt = conn.prepareStatement(sql);
 
             int affectedRows = pstmt.executeUpdate();
-            System.out.println("affectedRows = " + affectedRows);
-
-
+            System.out.println("affected rows = " + affectedRows);
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패" + e);
