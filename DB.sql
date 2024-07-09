@@ -26,3 +26,9 @@ SELECT RAND() * 10; #0부터 1까지 실행한 값에 10을 곱한것 ex)1.23432
 
 SELECT SUBSTRING(RAND() * 10 FROM 1 FOR 1);
 
+SELECT * FROM article;
+
+SELECT * FROM article ORDER BY id DESC;
+
+SELECT * FROM article ORDER BY id DESC;
+
