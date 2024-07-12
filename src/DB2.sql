@@ -7,10 +7,10 @@ USE `a5`;
 
 # 부서(dept) 테이블 생성 및 홍보부서 기획부서 추가
 CREATE TABLE dept (
-                      id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                      PRIMARY KEY(id),
-                      regDate DATETIME NOT NULL,
-                      `name` CHAR(100)NOT NULL
+    id      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id),
+    regDate DATETIME NOT NULL,
+    `name` CHAR(100)NOT NULL
 );
 
 ALTER TABLE dept MODIFY COLUMN `name` CHAR(100) NOT NULL UNIQUE;
@@ -25,11 +25,11 @@ SET regDate = NOW(),
 
 # 사원(emp) 테이블 생성 및 홍길동사원(홍보부서), 홍길순사원(홍보부서), 임꺽정사원(기획부서) 추가
 CREATE TABLE emp(
-                    id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    PRIMARY KEY(id),
-                    regDate DATETIME NOT NULL,
-                    `name` CHAR(100) NOT NULL,
-                    deptName CHAR(100) NOT NULL
+    id       INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id),
+    regDate  DATETIME  NOT NULL,
+    `name`   CHAR(100) NOT NULL,
+    deptName CHAR(100) NOT NULL
 );
 
 INSERT INTO emp
@@ -119,25 +119,23 @@ emp.name AS '사원명',
 dept.name AS `부서명`
 FROM emp
     INNER JOIN dept
-ON dept.id = emp.deptId`dept`
+ON dept.id = emp.deptId `dept`
 ORDER BY `부서명`;
 #######################################################################################################################
 
 # 20강 문제 연습 - 한 테이블에 모든 데이터가 있을 경우
 DROP DATABASE IF EXISTS mall;
-
 CREATE DATABASE mall;
-
 USE mall;
 
-CREATE TABLE t_shopping(
-                           id INT(5) PRIMARY KEY AUTO_INCREMENT,
-                           userId CHAR(30) NOT NULL,
-                           userPw CHAR(30) NOT NULL,
-                           userName CHAR(30) NOT NULL,
-                           address CHAR(50) NOT NULL,
-                           pname CHAR(50) NOT NULL,
-                           price INT(5) NOT NULL
+CREATE TABLE t_shopping (
+    id       INT(5) PRIMARY KEY AUTO_INCREMENT,
+    userId   CHAR(30) NOT NULL,
+    userPw   CHAR(30) NOT NULL,
+    userName CHAR(30) NOT NULL,
+    address  CHAR(50) NOT NULL,
+    pname    CHAR(50) NOT NULL,
+    price    INT(5) NOT NULL
 );
 
 INSERT INTO t_shopping
@@ -266,24 +264,24 @@ CREATE DATABASE mall;
 
 USE mall;
 
-CREATE TABLE t_order(
-                        id INT(5) PRIMARY KEY AUTO_INCREMENT,
-                        userNo INT(5) NOT NULL,
-                        productNo INT(5) NOT NULL
+CREATE TABLE t_order (
+    id        INT(5) PRIMARY KEY AUTO_INCREMENT,
+    userNo    INT(5) NOT NULL,
+    productNo INT(5) NOT NULL
 );
 
-CREATE TABLE t_user(
-                       id INT(5) PRIMARY KEY AUTO_INCREMENT,
-                       userId CHAR(200) NOT NULL,
-                       userPw CHAR(200) NOT NULL,
-                       userName CHAR(50) NOT NULL,
-                       addr CHAR(200) NOT NULL
+CREATE TABLE t_user (
+    id       INT(5) PRIMARY KEY AUTO_INCREMENT,
+    userId   CHAR(200) NOT NULL,
+    userPw   CHAR(200) NOT NULL,
+    userName CHAR(50)  NOT NULL,
+    addr     CHAR(200) NOT NULL
 );
 
-CREATE TABLE t_product(
-                          id INT(5) PRIMARY KEY AUTO_INCREMENT,
-                          pname CHAR(100) NOT NULL,
-                          price INT(10) NOT NULL
+CREATE TABLE t_product (
+    id    INT(5) PRIMARY KEY AUTO_INCREMENT,
+    pname CHAR(100) NOT NULL,
+    price INT(10) NOT NULL
 );
 
 INSERT INTO t_product
@@ -536,6 +534,7 @@ FROM t_order AS o
                     ON o.productNo = p.id
 WHERE u.userName = '소지섭';
 #######################################################################################################################
+
 #22강 문제 - 상황에 맞는 SQL을 작성해주세요, SUM, MAX, MIN, COUNT
 
 # a6 DB 삭제/생성/선택
@@ -544,11 +543,11 @@ CREATE DATABASE `a6`;
 USE `a6`;
 
 # 부서(홍보, 기획)
-CREATE TABLE dept (
-                      id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                      PRIMARY KEY(id),
-                      regDate DATETIME NOT NULL,
-                      `name` CHAR(100)NOT NULL
+CREATE TABLE dept(
+    id      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id),
+    regDate DATETIME  NOT NULL,
+    `name`  CHAR(100) NOT NULL
 );
 
 INSERT INTO dept
@@ -560,43 +559,42 @@ SET regDate = NOW(),
 `name` = '기획';
 
 # 사원(홍길동/홍보/5000만원, 홍길순/홍보/6000만원, 임꺽정/기획/4000만원)
-CREATE TABLE emp (
-                     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                     PRIMARY KEY(id),
-                     regDate DATETIME NOT NULL,
-                     `name` CHAR(50) NOT NULL,       #사원명
-                         deptName CHAR (100) NOT NULL,   #부서명
-                         salary INT(100) NOT NULL        #급여
+CREATE TABLE emp(
+    id      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id),
+    regDate DATETIME NOT NULL,
+    `name`  CHAR(50) NOT NULL,      #사원명
+    deptId CHAR (100) UNSIGNED NOT NULL,   #부서명
+    salary INT(100) NOT NULL        #급여
 );
 
 INSERT INTO emp
 SET regDate = NOW(),
 `name` = '홍길동',
-deptName = '홍보',
+deptId = 1,
 salary = 5000;
 
 INSERT INTO emp
 SET regDate = NOW(),
 `name` = '홍길순',
-deptName = '홍보',
+deptId = 1,
 salary = 6000;
 
 INSERT INTO emp
 SET regDate = NOW(),
 `name` = '임꺽정',
-deptName = '기획',
+deptId = 2,
 salary = 4000;
 
 SELECT * FROM emp;
+
 # 사원 수 출력
-SELECT COUNT(*) AS '사원 수'
+SELECT COUNT(*) AS '사원 수'   # 행의 개수, 행의 내부에서 데이터를 겹쳐서 송곳으로 뚫음(3겹, 몇 중첩인지)
 FROM emp;
 
 # 가장 큰 사원 번호 출력
-SELECT id AS '가장 큰 사원번호'
-FROM emp
-ORDER BY id DESC
-    LIMIT 1;
+SELECT MAX(id) AS '가장 큰 사원번호'
+FROM emp;
 
 # 가장 고액 연봉
 SELECT MAX(salary) AS '가장 고액 연봉'
@@ -613,187 +611,177 @@ SELECT SUM(salary) AS '1년 고정지출(인건비)'
 FROM emp;
 
 # 부서별, 1년 고정 지출(인건비)
-SELECT deptName AS '부서명' , SUM(salary) AS '1년 고정지출(인건비)'
+SELECT deptId, SUM(salary) AS '1년 고정지출(인건비)'
 FROM emp
-GROUP BY deptName;
+GROUP BY deptId;    # 적절한 기준을 명시 해주어야함
 
 # 부서별, 최고연봉
-SELECT deptname AS '부서명' , MAX(salary) AS '최고연봉'
+SELECT deptId, MAX(salary) AS '최고연봉'
 FROM emp
-GROUP BY deptname;
-
+GROUP BY deptId;
 
 # 부서별, 최저연봉
-SELECT deptName AS '부서명' , MIN(salary) AS '최저연봉'
+SELECT deptId, MIN(salary) AS '최저연봉'
 FROM emp
-GROUP BY deptname;
+GROUP BY deptId;
 
 # 부서별, 평균연봉
-SELECT deptName AS '부서명' , AVG(salary) AS '평균연봉'
+SELECT deptId, AVG(salary) AS '평균연봉'
 FROM emp
-GROUP BY deptname
+GROUP BY deptId;
 
 SELECT * FROM emp;
-
-### 구조를 변경, 사원테이블에서 부서를 번호로 기억
-ALTER TABLE emp ADD COLUMN deptId INT(10) UNSIGNED NOT NULL AFTER deptName;
-
-UPDATE emp
-SET deptId = 1
-WHERE deptName = '홍보';
-
-UPDATE emp
-SET deptId = 2
-WHERE deptName = '기획';
-
-ALTER TABLE emp DROP COLUMN deptName;
-
 
 # 부서별, 부서명, 사원리스트, 평균연봉, 최고연봉, 최소연봉, 사원수
 ## V1(조인 안한 버전)
 SELECT
-    deptId,
-    GROUP_CONCAT(`name`) AS '사원리스트',
-        AVG(salary) AS '평균연봉',
-        MAX(salary) AS '최고연봉',
-        MIN(salary) AS '최소연봉',
-        COUNT(*) AS '사원수'
-FROM emp
+    e.deptId AS '부서번호',
+    GROUP_CONCAT(e.name) AS '사원리스트',
+    CONCAT(TRUNCATE(AVG(e.salary), 0) ,'만원') AS '평균연봉', # TRUNCATE(숫자,버릴 자릿수) - 숫자를 버릴 자릿수 아래로 버림
+    CONCAT(MAX(e.salary) ,'만원') AS '최고연봉',
+    CONCAT(MIN(e.salary) ,'만원') AS '최소연봉',
+    COUNT(e.salary) AS '사원수'
+FROM emp AS e
 GROUP BY deptId;
 
 ## V2(조인해서 부서명까지 나오는 버전)
 SELECT
-    dept.name AS '부서명',
-        GROUP_CONCAT(emp.`name`) AS '사원리스트',
-        CONCAT(ROUND(AVG(salary),0), '만원') AS '평균연봉',
-        CONCAT(MAX(salary), '만원') AS '최고연봉',
-        CONCAT(MIN(salary), '만원') AS '최소연봉',
-        COUNT(*) AS '사원수'
-FROM emp
-         INNER JOIN dept             #dept 테이블을 join
-ON dept.id = emp.deptId     #dept 테이블의 id와, emp테이블의 deptId가 같은 것만
+    e.deptId AS '부서번호', d.name AS '부서명',
+    GROUP_CONCAT(e.name) AS '사원리스트',
+    CONCAT(TRUNCATE(AVG(e.salary), 0) , '만원') AS '평균연봉',
+    CONCAT(MAX(e.salary), '만원') AS '최고연봉',
+    CONCAT(MIN(e.salary), '만원') AS '최소연봉',
+    COUNT(e.salary) AS '사원수'
+FROM emp e      #AS 생략 가능
+INNER JOIN dept d        #dept 테이블을 join
+ON e.deptId= d.id       #emp 테이블의 deptId와, dept 테이블의 id가 같은 것만
 GROUP BY deptId;
 
 ## V3(V2에서 평균연봉이 5000이상인 부서로 추리기)
 SELECT
     dept.name AS '부서명',
-        GROUP_CONCAT(emp.`name`) AS '사원리스트',
-        CONCAT(ROUND(AVG(salary),0), '만원') AS '평균연봉',
-        CONCAT(MAX(salary), '만원') AS '최고연봉',
-        CONCAT(MIN(salary), '만원') AS '최소연봉',
-        COUNT(*) AS '사원수'
+    GROUP_CONCAT(emp.`name`) AS '사원리스트',
+    CONCAT(ROUND(AVG(salary), 0), '만원') AS '평균연봉',
+    CONCAT(MAX(salary), '만원') AS '최고연봉',
+    CONCAT(MIN(salary), '만원') AS '최소연봉',
+    COUNT(*) AS '사원수'
 FROM emp
-         INNER JOIN dept
-                    ON dept.id = emp.deptId
+INNER JOIN dept
+ON dept.id = emp.deptId
 GROUP BY deptId
-HAVING AVG(salary) >= 5000;     #그룹의 조건은 having 사용
+HAVING AVG(salary) >= 5000;     #group by 이후에 오는 조건은 having 사용/ where는 group by 보다 먼저 실행되기 때문에 group by 이후에 where로 조건을 따질 수 없다.
 
-## V4(V3에서 HAVING 없이 서브쿼리로 수행)
+## V4(V3에서 HAVING 없이 서브쿼리로 수행)  -> 나중에 진행
 ### HINT, UNION을 이용한 서브쿼리
-# SELECT *
-                                                  # FROM (
-                                                             #     select 1 AS id
+#SELECT *
+#FROM (
+# select 1 AS id
 #     union
 #     select 2
 #     UNION
 #     select 3
-# ) AS A
-
-SELECT * FROM emp;
-SELECT * FROM dept;
-
-SELECT
-    dept.name AS '부서명',
-        GROUP_CONCAT(emp.`name`) AS '사원리스트',
-        CONCAT(ROUND(AVG(salary),0), '만원') AS '평균연봉',
-        CONCAT(MAX(salary), '만원') AS '최고연봉',
-        CONCAT(MIN(salary), '만원') AS '최소연봉',
-        COUNT(*) AS '사원수'
-FROM emp
-         INNER JOIN dept
-                    ON dept.id = emp.deptId
-GROUP BY deptId
-HAVING AVG(salary) >= 5000;
-
-SELECT *
-FROM (
-         SELECT
+#)
 
 #######################################################################################################################
-    # 22강 문제 풀기
-             DROP DATABASE IF EXISTS scott;
 
+# 22강 문제 풀기
+DROP DATABASE IF EXISTS scott;
 CREATE DATABASE scott;
-
 USE scott;
 
 CREATE TABLE DEPT (
-                      DEPTNO DECIMAL(2),
-                      DNAME VARCHAR(14),
-                      LOC VARCHAR(13),
-                      CONSTRAINT PK_DEPT PRIMARY KEY (DEPTNO)
+    DEPTNO DECIMAL(2),
+    DNAME  VARCHAR(14),
+    LOC    VARCHAR(13),
+    CONSTRAINT PK_DEPT PRIMARY KEY (DEPTNO)
 );
-CREATE TABLE EMP (
-                     EMPNO DECIMAL(4),
-                     ENAME VARCHAR(10),
-                     JOB VARCHAR(9),
-                     MGR DECIMAL(4),
-                     HIREDATE DATE,
-                     SAL DECIMAL(7,2),
-                     COMM DECIMAL(7,2),
-                     DEPTNO DECIMAL(2),
-                     CONSTRAINT PK_EMP PRIMARY KEY (EMPNO),
-                     CONSTRAINT FK_DEPTNO FOREIGN KEY (DEPTNO) REFERENCES DEPT(DEPTNO)
-);
-CREATE TABLE SALGRADE (
-                          GRADE TINYINT,
-                          LOSAL SMALLINT,
-                          HISAL SMALLINT
-);
-INSERT INTO DEPT VALUES (10,'ACCOUNTING','NEW YORK');
-INSERT INTO DEPT VALUES (20,'RESEARCH','DALLAS');
-INSERT INTO DEPT VALUES (30,'SALES','CHICAGO');
-INSERT INTO DEPT VALUES (40,'OPERATIONS','BOSTON');
-INSERT INTO EMP VALUES (7369,'SMITH','CLERK',7902,STR_TO_DATE('17-12-1980','%d-%m-%Y'),800,NULL,20);
-INSERT INTO EMP VALUES (7499,'ALLEN','SALESMAN',7698,STR_TO_DATE('20-2-1981','%d-%m-%Y'),1600,300,30);
-INSERT INTO EMP VALUES (7521,'WARD','SALESMAN',7698,STR_TO_DATE('22-2-1981','%d-%m-%Y'),1250,500,30);
-INSERT INTO EMP VALUES (7566,'JONES','MANAGER',7839,STR_TO_DATE('2-4-1981','%d-%m-%Y'),2975,NULL,20);
-INSERT INTO EMP VALUES (7654,'MARTIN','SALESMAN',7698,STR_TO_DATE('28-9-1981','%d-%m-%Y'),1250,1400,30);
-INSERT INTO EMP VALUES (7698,'BLAKE','MANAGER',7839,STR_TO_DATE('1-5-1981','%d-%m-%Y'),2850,NULL,30);
-INSERT INTO EMP VALUES (7782,'CLARK','MANAGER',7839,STR_TO_DATE('9-6-1981','%d-%m-%Y'),2450,NULL,10);
-INSERT INTO EMP VALUES (7788,'SCOTT','ANALYST',7566,STR_TO_DATE('13-7-1987','%d-%m-%Y')-85,3000,NULL,20);
-INSERT INTO EMP VALUES (7839,'KING','PRESIDENT',NULL,STR_TO_DATE('17-11-1981','%d-%m-%Y'),5000,NULL,10);
-INSERT INTO EMP VALUES (7844,'TURNER','SALESMAN',7698,STR_TO_DATE('8-9-1981','%d-%m-%Y'),1500,0,30);
-INSERT INTO EMP VALUES (7876,'ADAMS','CLERK',7788,STR_TO_DATE('13-7-1987', '%d-%m-%Y'),1100,NULL,20);
-INSERT INTO EMP VALUES (7900,'JAMES','CLERK',7698,STR_TO_DATE('3-12-1981','%d-%m-%Y'),950,NULL,30);
-INSERT INTO EMP VALUES (7902,'FORD','ANALYST',7566,STR_TO_DATE('3-12-1981','%d-%m-%Y'),3000,NULL,20);
-INSERT INTO EMP VALUES (7934,'MILLER','CLERK',7782,STR_TO_DATE('23-1-1982','%d-%m-%Y'),1300,NULL,10);
-INSERT INTO SALGRADE VALUES (1,700,1200);
-INSERT INTO SALGRADE VALUES (2,1201,1400);
-INSERT INTO SALGRADE VALUES (3,1401,2000);
-INSERT INTO SALGRADE VALUES (4,2001,3000);
-INSERT INTO SALGRADE VALUES (5,3001,9999);
 
+CREATE TABLE EMP (
+    EMPNO    DECIMAL(4),
+    ENAME    VARCHAR(10),
+    JOB      VARCHAR(9),
+    MGR      DECIMAL(4),
+    HIREDATE DATE,
+    SAL      DECIMAL(7, 2),
+    COMM     DECIMAL(7, 2),
+    DEPTNO   DECIMAL(2),
+    CONSTRAINT PK_EMP PRIMARY KEY (EMPNO),
+    CONSTRAINT FK_DEPTNO FOREIGN KEY (DEPTNO) REFERENCES DEPT (DEPTNO)
+);
+
+CREATE TABLE SALGRADE (
+    GRADE TINYINT,
+    LOSAL SMALLINT,
+    HISAL SMALLINT
+);
+
+INSERT INTO DEPT
+VALUES (10, 'ACCOUNTING', 'NEW YORK');
+INSERT INTO DEPT
+VALUES (20, 'RESEARCH', 'DALLAS');
+INSERT INTO DEPT
+VALUES (30, 'SALES', 'CHICAGO');
+INSERT INTO DEPT
+VALUES (40, 'OPERATIONS', 'BOSTON');
+INSERT INTO EMP
+VALUES (7369, 'SMITH', 'CLERK', 7902, STR_TO_DATE('17-12-1980', '%d-%m-%Y'), 800, NULL, 20);
+INSERT INTO EMP
+VALUES (7499, 'ALLEN', 'SALESMAN', 7698, STR_TO_DATE('20-2-1981', '%d-%m-%Y'), 1600, 300, 30);
+INSERT INTO EMP
+VALUES (7521, 'WARD', 'SALESMAN', 7698, STR_TO_DATE('22-2-1981', '%d-%m-%Y'), 1250, 500, 30);
+INSERT INTO EMP
+VALUES (7566, 'JONES', 'MANAGER', 7839, STR_TO_DATE('2-4-1981', '%d-%m-%Y'), 2975, NULL, 20);
+INSERT INTO EMP
+VALUES (7654, 'MARTIN', 'SALESMAN', 7698, STR_TO_DATE('28-9-1981', '%d-%m-%Y'), 1250, 1400, 30);
+INSERT INTO EMP
+VALUES (7698, 'BLAKE', 'MANAGER', 7839, STR_TO_DATE('1-5-1981', '%d-%m-%Y'), 2850, NULL, 30);
+INSERT INTO EMP
+VALUES (7782, 'CLARK', 'MANAGER', 7839, STR_TO_DATE('9-6-1981', '%d-%m-%Y'), 2450, NULL, 10);
+INSERT INTO EMP
+VALUES (7788, 'SCOTT', 'ANALYST', 7566, STR_TO_DATE('13-7-1987', '%d-%m-%Y') - 85, 3000, NULL, 20);
+INSERT INTO EMP
+VALUES (7839, 'KING', 'PRESIDENT', NULL, STR_TO_DATE('17-11-1981', '%d-%m-%Y'), 5000, NULL, 10);
+INSERT INTO EMP
+VALUES (7844, 'TURNER', 'SALESMAN', 7698, STR_TO_DATE('8-9-1981', '%d-%m-%Y'), 1500, 0, 30);
+INSERT INTO EMP
+VALUES (7876, 'ADAMS', 'CLERK', 7788, STR_TO_DATE('13-7-1987', '%d-%m-%Y'), 1100, NULL, 20);
+INSERT INTO EMP
+VALUES (7900, 'JAMES', 'CLERK', 7698, STR_TO_DATE('3-12-1981', '%d-%m-%Y'), 950, NULL, 30);
+INSERT INTO EMP
+VALUES (7902, 'FORD', 'ANALYST', 7566, STR_TO_DATE('3-12-1981', '%d-%m-%Y'), 3000, NULL, 20);
+INSERT INTO EMP
+VALUES (7934, 'MILLER', 'CLERK', 7782, STR_TO_DATE('23-1-1982', '%d-%m-%Y'), 1300, NULL, 10);
+INSERT INTO SALGRADE
+VALUES (1, 700, 1200);
+INSERT INTO SALGRADE
+VALUES (2, 1201, 1400);
+INSERT INTO SALGRADE
+VALUES (3, 1401, 2000);
+INSERT INTO SALGRADE
+VALUES (4, 2001, 3000);
+INSERT INTO SALGRADE
+VALUES (5, 3001, 9999);
 
 #1. 사원 테이블의 모든 레코드를 조회하시오.
 SELECT *
 FROM EMP;
 
 #2. 사원명과 입사일을 조회하시오.
-SELECT ENAME AS '사원명', HIREDATE AS '입사일'
+SELECT ENAME, HIREDATE
 FROM EMP;
 
 #3. 사원번호와 이름을 조회하시오.
-SELECT EMPNO AS '사원번호', ENAME AS '이름'
+SELECT EMPNO, ENAME
 FROM EMP;
 
-#4. 사원테이블에 있는 직책의 목록을 조회하시오. (hint : distinct, group by)
+#4. 사원테이블에 있는 직책의 목록을 조회하시오. (hint : distinct, group by)    # 중복제거 : DISTINCT
 SELECT * FROM DEPT;
-SELECT DISTINCT JOB AS '직책'
+
+SELECT DISTINCT JOB
 FROM EMP;
 
 #5. 총 사원수를 구하시오. (hint : count)
-SELECT COUNT(*) AS '사원수'
+SELECT COUNT(EMPNO)
 FROM EMP;
 
 #6. 부서번호가 10인 사원을 조회하시오.
@@ -812,61 +800,72 @@ FROM EMP
 WHERE ENAME = 'KING';
 
 #9. 사원들 중 이름이 S로 시작하는 사원의 사원번호와 이름을 조회하시오. (hint : like)
-SELECT EMPNO AS '사원번호', ENAME AS '이름'
+SELECT EMPNO, ENAME
 FROM EMP
-WHERE ENAME
-          LIKE 'S%';
+WHERE ENAME LIKE 'S%';
 
-#10. 사원 이름에 T가 포함된 사원의 사원번호와 이름을 조회하시오. (hint : like)
-SELECT EMPNO AS '사원번호', ENAME AS '이름'
+#10. 사원이름에 T가 포함된 사원의 사원번호와 이름을 조회하시오. (hint : like)
+SELECT EMPNO, ENAME
 FROM EMP
 WHERE ENAME
-          LIKE '%T%';
+LIKE '%T%';
 
 #11. 커미션이 300, 500, 1400 인 사원의 사번,이름,커미션을 조회하시오. (hint : OR, in )
-SELECT EMPNO AS '사원번호', ENAME AS '이름', COMM AS '커미션'
+SELECT EMPNO, ENAME, COMM
+FROM EMP
+WHERE COMM = 300
+   OR COMM = 500
+   OR COMM = 1400;
+
+SELECT EMPNO, ENAME, COMM
 FROM EMP
 WHERE COMM IN (300, 500, 1400);
 
 #12. 월급여가 1200 에서 3500 사이의 사원의 사번,이름,월급여를 조회하시오. (hint : AND, between)
-SELECT EMPNO AS '사원번호', ENAME AS '사원명', SAL AS '월급여'
+SELECT EMPNO, ENAME, SAL
 FROM EMP
-WHERE SAL BETWEEN 1200 AND 3500;
+WHERE SAL >= 1200
+  AND SAL <= 3500;
+
+SELECT EMPNO, ENAME, SAL
+FROM EMP
+WHERE SAL BETWEEN 1200 AND 3500;    #BETWEEN은 이상, 이하
 
 #13. 직급이 매니저이고 부서번호가 30번인 사원의 이름,사번,직급,부서번호를 조회하시오.
-SELECT ENAME AS '이름', EMPNO AS '사원번호', JOB AS '직급' , DEPTNO AS '부서번호'
+SELECT ENAME, EMPNO, JOB, DEPTNO
 FROM EMP
-WHERE JOB = 'MANAGER' AND DEPTNO = '30';
+WHERE JOB = 'MANAGER' AND DEPTNO = 30;
 
 #14. 부서번호가 30인 아닌 사원의 사번,이름,부서번호를 조회하시오. (not)
-SELECT EMPNO AS '사원번호', ENAME AS '이름', DEPTNO AS '부서번호'
+SELECT EMPNO, ENAME, DEPTNO
 FROM EMP
-WHERE NOT DEPTNO = '30';
+WHERE NOT DEPTNO = 30;
+# WHERE <> 30;
 
-#15. 커미션이 300, 500, 1400 이 모두 아닌 사원의 사번,이름,커미션을 조회하시오. (hint : not in)
-SELECT EMPNO AS '사원번호', ENAME AS '이름', COMM AS '커미션'
+#15. 커미션 300, 500, 1400 이 모두 아닌 사원의 사번,이름,커미션을 조회하시오. (hint : not in)
+SELECT EMPNO, ENAME, COMM
 FROM EMP
 WHERE COMM NOT IN (300, 500, 1400);
 
 #16. 이름에 S가 포함되지 않는 사원의 사번,이름을 조회하시오. (hint : not like)
-SELECT EMPNO AS '사원번호', ENAME AS '이름'
+SELECT EMPNO, ENAME
 FROM EMP
-WHERE ENAME
-          NOT LIKE '%S%';
+WHERE ENAME NOT LIKE '%S%';
 
 #17. 급여가 1200보다 미만이거나 3700 초과하는 사원의 사번,이름,월급여를 조회하시오. (hint : not, between)
-SELECT * FROM EMP;
-SELECT EMPNO AS '사원번호', ENAME AS '이름', SAL AS '월급여'
+SELECT EMPNO, ENAME, SAL
+FROM EMP
+WHERE SAL < 1200
+   OR SAL > 3700;
+
+SELECT EMPNO, ENAME, SAL
 FROM EMP
 WHERE SAL NOT BETWEEN 1200 AND 3700;
 
 #18. 직속상사가 NULL 인 사원의 이름과 직급을 조회하시오. (hint : is null, is not null)
-SELECT * FROM EMP;
-
-SELECT ENAME AS '이름', JOB AS '직급'
+SELECT ENAME, JOB
 FROM EMP
 WHERE MGR IS NULL;
-
 
 #19. 부서별 평균월급여를 구하는 쿼리 (hint : group by, avg())
 SELECT DEPTNO AS '부서번호', AVG(SAL) AS '평균월급여'
@@ -874,9 +873,12 @@ FROM EMP
 GROUP BY DEPTNO;
 
 #20. 부서별 전체 사원수와 커미션을 받는 사원들의 수를 구하는 쿼리 (hint : group by, count())
-SELECT DEPTNO AS '부서번호', COUNT(*) AS '전체 사원수', COUNT(COMM)  AS '커미션 받는 사원 수'
+SELECT DEPTNO AS '부서번호', COUNT(*) AS '전체 사원수', COUNT(COMM) AS '커미션 받는 사원 수', COUNT(IF(COMM = 0, NULL, COMM))
 FROM EMP
 GROUP BY DEPTNO;
+
+#COUNT(IF(COMM=0, NULL, COMM))     ## COUNT 할때 IF를 사용할 수 있음. 자바의 삼항 연산자와 같다.
+
 
 #21. 부서별 최대 급여와 최소 급여를 구하는 쿼리 (hint : group by, min(), max())
 SELECT DEPTNO AS '부서번호', MAX(SAL) AS '최대 급여', MIN(SAL) AS '최소 급여'
@@ -896,77 +898,103 @@ WHERE SAL >= 1000
 GROUP BY DEPTNO
 HAVING AVG(SAL) >= 2000;
 
+
 #24. 사원명과 부서명을 조회하시오. (hint : inner join)
 SELECT * FROM DEPT;
 SELECT * FROM EMP;
 
-SELECT EMP.ENAME AS '사원명' ,DEPT.DNAME AS '부서명'
-FROM EMP
-         INNER JOIN DEPT
-                    ON DEPT.DEPTNO = EMP.DEPTNO;
+SELECT e.ENAME AS '사원명' , d.DNAME AS '부서명'
+FROM EMP e
+INNER JOIN DEPT d
+ON e.DEPTNO = d.DEPTNO;
 
-#25. 이름,월급여,월급여등급을 조회하시오. (hint : inner join, between)
-SELECT EMP.ENAME AS '이름', EMP.SAL AS '월급여', SALGRADE.GRADE AS '월급여등급'
-FROM EMP
-         INNER JOIN SALGRADE
-WHERE EMP.SAL BETWEEN SALGRADE.LOSAL AND SALGRADE.HISAL;
+#25. 이름 ,월급여,월급여등급을 조회하시오. (hint : inner join, between)
+SELECT e.ENAME AS '이름', e.SAL AS '월급여', s.GRADE AS '월급여등급'
+FROM EMP e
+         INNER JOIN SALGRADE s
+WHERE e.SAL BETWEEN s.LOSAL AND s.HISAL;
 
-#26. 이름,부서명,월급여등급을 조회하시오.
+#26. 이름 ,부서명,월급여등급을 조회하시오.
 SELECT * FROM DEPT;
 SELECT * FROM EMP;
 SELECT * FROM SALGRADE;
 
-SELECT EMP.ENAME AS '이름' , DEPT.DNAME AS '부서명' , SALGRADE.GRADE AS '월급여등급'
-FROM EMP
-         INNER JOIN DEPT
-                    ON EMP.DEPTNO = DEPT.DEPTNO
-         INNER JOIN SALGRADE
-                    ON EMP.SAL BETWEEN SALGRADE.LOSAL AND SALGRADE.HISAL;
+SELECT e.ENAME AS '이름' , d.DNAME AS '부서명' , s.GRADE AS '월급여등급'
+FROM EMP e
+INNER JOIN DEPT d
+ON e.DEPTNO = d.DEPTNO
+INNER JOIN SALGRADE s
+ON e.SAL BETWEEN s.LOSAL AND s.HISAL;
 
 #27. 이름,직속상사이름을 조회하시오. (hint : self join
-SELECT EMP1.ENAME AS '이름', EMP2.MGR AS '직속상사이름'
-FROM EMP EMP1
-JOIN EMP EMP2
-ON EMP1.EMPNO = EMP2.EMPNO;
+SELECT e1.ename AS '이름', e2.ename AS '직속상사이름'
+FROM emp e1
+INNER JOIN emp e2
+ON e1.mgr = e2.empno;
 
 #28. 이름,직속상사이름을 조회하시오.(단 직속 상사가 없는 사람도 직속상사 결과가 null값으로 나와야 함) (hint : outer join)
 ###외부OUTER 조인. A LEFT JOIN B는 조인 조건에 만족하지 못하더라도 왼쪽 테이블 A의 행을 나타내고 싶을 때 사용한다.
 ###반대로 A RIGHT JOIN B는 조인 조건에 만족하지 못하더라도 오른쪽 테이블 B의 행을 나타내고 싶을 때
-SELECT EMP1.ENAME AS '이름', EMP2.MGR AS '직속상사이름'
-FROM EMP EMP1
-LEFT OUTER JOIN EMP EMP2
-ON EMP1.EMPNO = EMP2.EMPNO;
+SELECT e1.ename AS '이름' , e2.ename AS '직속상사이름'
+FROM emp e1
+LEFT JOIN emp e2
+ON e1.mgr = e2.empno;
 
 #29. 이름,부서명을 조회하시오.
 #단, 사원테이블에 부서번호가 40에 속한 사원이 없지만 부서번호 40인 부서명도 출력되도록 하시오. (hint : outer join)
-SELECT EMP.ENAME , DEPT.DNAME
-FROM EMP
-RIGHT OUTER JOIN DEPT
-ON EMP.DEPTNO = DEPT.DEPTNO;
+SELECT e.ENAME , d.DNAME
+FROM EMP e
+RIGHT JOIN DEPT d
+ON e.DEPTNO = d.DEPTNO;
 
 #서브 쿼리는 SELECT 문 안에서 ()로 둘러싸인 SELECT 문을 말하며 쿼리문의 결과를 메인 쿼리로 전달하기 위해 사용된다.
 #사원명 'JONES'가 속한 부서명을 조회하시오.
 #부서번호를 알아내기 위한 쿼리가 서브 쿼리로 사용.
-SELECT DEPTNO FROM DEPT # 부서번호 알아내는 쿼리.....
 
-SELECT * FROM EMP;
-SELECT * FROM DEPT;
-SELECT DEPTNO FROM DEPT WHERE DEPTNO = 10;
-SELECT
+SELECT e.ename, d.dname
+FROM emp e
+INNER JOIN dept d
+ON e.deptno = d.deptno
+WHERE e.ename = 'JONES';
 
-SELECT DEMP.DNAME   # 부서명 // 사원 JONES 가 속한...
-FROM EMP
-WHERE (SELECT DEPTNO FROM DEPT INNER JOIN EMP WHERE EMP.ENAME = JONES)
+# 서브쿼리
+SELECT e.ename, (SELECT dname FROM dept WHERE deptno = e.deptno)    # 서브쿼리의 결과는 1행이어야함
+FROM emp e
+WHERE e.ename = 'JONES'
 
-SELECT DEPTNO FROM DEPT INNER JOIN EMP ON WHERE EMP.ENAME = JONES
-
+SELECT e.ename, 'RESEARCH'
+FROM emp e
+WHERE e.ename = 'JONES'
 
 #30. 10번 부서에서 근무하는 사원의 이름과 10번 부서의 부서명을 조회하시오. (hint : sub query)
-SELECT EMP.ENAME, DEPT.DNAME
-FROM (SELECT DEPTNO FROM DEPT WHERE DEPTNO = 10);
+SELECT e.ename, d.dname
+FROM emp e
+INNER JOIN dept d
+ON e.deptno = d.deptno
+WHERE e.deptno = 10;
+
+# 스칼라 서브쿼리 사용   - 서브쿼리를 사용할때는 결과값이 하나만 나와야한다.   // 1 sell
+SELECT ename, (SELECT dname FROM dept WHERE deptno = 10) AS dname
+FROM emp
+WHERE deptno = 10;
+
+# 인라인 서브쿼리  // 한 행
+SELECT e.ename, a.dname AS dname
+FROM emp e
+INNER JOIN
+(SELECT dname FROM dept WHERE deptno = 10) a
+ON e.deptno = d.deptno;
 
 #31. 평균 월급여보다 더 많은 월급여를 받은 사원의 사원번호,이름,월급여 조회하시오. (hint : sub query)
+# 문제 풀 때, join 으로 먼저 해보고 그 후에 다른 방식도 해보기.
+SELECT * FROM emp;
+SELECT * FROM dept;
 
+SELECT AVG(sal) FROM emp;   #평균 월급여
+
+SELECT empno, ename, sal    #사번, 이름, 월급여
+FROM emp
+WHERE sal > (SELECT AVG(sal) FROM emp);
 
 #32. 부서번호가 10인 사원중에서 최대급여를 받는 사원의 사원번호, 이름을 조회하시오. (hint : sub query)
 

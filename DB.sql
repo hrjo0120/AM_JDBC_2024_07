@@ -32,3 +32,32 @@ SELECT * FROM article ORDER BY id DESC;
 
 SELECT * FROM article ORDER BY id DESC;
 
+CREATE TABLE `member`(
+                         id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                         regDate DATETIME NOT NULL,
+                         updateDate DATETIME NOT NULL,
+                         loginId CHAR(30) NOT NULL,
+                         loginPw CHAR(200) NOT NULL,
+                         `name` CHAR(100) NOT NULL
+);
+
+INSERT INTO `member`
+SET regdate = NOW(),
+    updateDate = NOW(),
+    loginId = 'test1',
+    loginPw = 'test1',
+    `name` = 'name1';
+
+INSERT INTO `member`
+SET regdate = NOW(),
+    updateDate = NOW(),
+    loginId = 'test2',
+    loginPw = 'test2',
+    `name` = 'name2';
+
+INSERT INTO `member`
+SET regdate = NOW(),
+    updateDate = NOW(),
+    loginId = 'test3',
+    loginPw = 'test3',
+    `name` = 'name3';
