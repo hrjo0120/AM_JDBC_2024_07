@@ -1,6 +1,6 @@
 package org.koreait.controller;
 
-import org.koreait.Article;
+import org.koreait.dto.Article;
 import org.koreait.service.ArticleService;
 
 import java.sql.Connection;

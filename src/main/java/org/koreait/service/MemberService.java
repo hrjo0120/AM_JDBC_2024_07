@@ -1,6 +1,7 @@
 package org.koreait.service;
 
 import org.koreait.dao.MemberDao;
+import org.koreait.dto.Member;
 
 import java.sql.Connection;
 
@@ -18,5 +19,9 @@ public class MemberService {
 
     public int doJoin(String loginId, String loginPw, String name) {
         return memberDao.doJoin(loginId,loginPw,name);
+    }
+
+    public Member getMemberByLoginId(String loginId) {
+        return memberDao.getMemberByLoginId(loginId);
     }
 }

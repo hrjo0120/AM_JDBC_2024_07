@@ -1,5 +1,6 @@
 package org.koreait.controller;
 
+import org.koreait.dto.Member;
 import org.koreait.service.MemberService;
 import org.koreait.util.DBUtil;
 import org.koreait.util.SecSql;
@@ -35,7 +36,7 @@ public class MemberController {
                 continue;
             }
 
-            boolean isLoindIdDup = memberService.isLoginIdDup(conn,loginId);
+            boolean isLoindIdDup = memberService.isLoginIdDup(conn, loginId);
 
             if (isLoindIdDup) {
                 System.out.println(loginId + "는(은) 이미 사용중인 아이디 입니다");
@@ -97,5 +98,60 @@ public class MemberController {
 
         System.out.println(id + "번 회원이 생성되었습니다");
 
+    }
+
+    public void login() {
+        String loginId = null;
+        String loginPw = null;
+
+        System.out.println("== 로그인 ==");
+
+        while (true) {
+            System.out.print("ID : ");
+            loginId = sc.nextLine().trim();
+
+            if (loginId.length() == 0 || loginId.contains(" ")) {
+                System.out.println("ID를 입력해주세요.");
+                continue;
+            }
+
+            boolean isLoginIdDup = memberService.isLoginIdDup(conn, loginId);   // ID 있는지 없는지 확인.
+
+            if (isLoginIdDup == false) {
+                System.out.println(loginId + "는(은) 없는 아이디 입니다.");
+                continue;
+            }
+            break;
+        }
+
+        Member member = memberService.getMemberByLoginId(loginId);
+
+        int tryMaxCount = 3;
+        int tryCount = 0;
+
+        while (true) {
+            if(tryCount >= tryMaxCount) {
+                System.out.println("비밀번호를 다시 확인하고 시도해주십시오.");
+                break;
+            }
+
+            System.out.print("PW : ");
+            loginPw = sc.nextLine().trim();
+
+            if (loginPw.length() == 0 || loginPw.contains(" ")) {
+                tryCount++;
+                System.out.println("비밀번호를 입력하세요.");
+                continue;
+            }
+
+            if(member.getLoginPw().equals(loginPw) == false) {
+                tryCount++;
+                System.out.println("비밀번호가 일치하지 않습니다.");
+                continue;
+            }
+
+            System.out.println(loginId + "님 환영합니다!");
+            break;
+        }
     }
 }
