@@ -16,7 +16,7 @@ public class MemberController {
     public MemberController(Scanner sc, Connection conn) {
         this.sc = sc;
         this.conn = conn;
-        this.memberService = new MemberService();
+        this.memberService = new MemberService(conn);
     }
 
     public void doJoin() {
