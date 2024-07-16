@@ -61,6 +61,8 @@ SET regDate    = NOW(),
     loginPw    = 'test2',
     `name`     = '홍길동';
 
+###############################################################################
+
 ## 게시글 테스트 데이터 대량 생성
 INSERT INTO article
 SET regDate    = NOW(),
@@ -69,17 +71,22 @@ SET regDate    = NOW(),
     `body`     = CONCAT('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
 
 SELECT *
-FROM article;
+FROM article
+ORDER BY id DESC;
 
 SELECT *
 FROM `member`;
 
 ###############################################################################
+SELECT A.*, M.name AS extra__writer
+FROM article A
+INNER JOIN `member` M
+ON A.memberId = M.id;
+
 INSERT INTO article
 SET regDate = NOW(),
-    updateDate = NOW(),
-    title = 'abc',
-    `body`= 'abcd';
+    updateDate = NOW()
+    title = 'abc', `body`= 'abcd';
 
 
 SELECT COUNT(*) > 0
