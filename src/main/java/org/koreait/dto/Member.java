@@ -10,6 +10,18 @@ public class Member {
     private String loginPw;
     private String name;
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", regDate='" + regDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", loginPw='" + loginPw + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public Member(int id, String regDate, String updateDate, String loginId, String loginPw, String name) {
         this.id = id;
         this.regDate = regDate;
