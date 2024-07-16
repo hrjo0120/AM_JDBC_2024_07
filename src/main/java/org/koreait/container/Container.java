@@ -28,6 +28,7 @@ public class Container {
     public static Session session;
 
     public static void init() {
+        // 만들어지고 활용을 해야하기 때문에 역순이 되면 오류가 생김
         sc = new Scanner(System.in);
 
         session = new Session();

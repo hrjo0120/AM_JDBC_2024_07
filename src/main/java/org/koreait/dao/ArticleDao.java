@@ -27,7 +27,7 @@ public class ArticleDao {
     public List<Article> getArticles() {
         SecSql sql = new SecSql();
 
-        sql.append("SELECT A.*, M.name AS extra__writer");
+        sql.append("SELECT A.*, M.name");
         sql.append("FROM article A");
         sql.append("INNER JOIN `member` M");
         sql.append("ON A.memberId = M.id");
@@ -43,7 +43,7 @@ public class ArticleDao {
         return articles;
     }
 
-    public Map<String, Object> getArticleById(int id) {
+    public Article getArticleById(int id) {
         SecSql sql = new SecSql();
 
         sql.append("SELECT A.*, M.name");
@@ -52,7 +52,14 @@ public class ArticleDao {
         sql.append("ON A.memberId = M.id");
         sql.append("WHERE A.id = ?", id);
 
-        return DBUtil.selectRow(Container.conn, sql);
+        Map<String, Object> articleMap = DBUtil.selectRow(Container.conn, sql);
+
+
+        if (articleMap.isEmpty()) {
+            return null;
+        }
+
+        return new Article(articleMap);
     }
 
     public void doUpdate(int id, String title, String body) {

@@ -64,10 +64,15 @@ public class ArticleController {
             return;
         }
 
-        Map<String, Object> articleMap = articleService.getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
-        if (articleMap.isEmpty()) {
+        if (article == null) {
             System.out.println(id + "번 글은 없습니다.");
+            return;
+        }
+
+        if(article.getMemberId() != Container.session.loginedMemberId) {
+            System.out.println("권한 없음");
             return;
         }
 
@@ -95,14 +100,12 @@ public class ArticleController {
 
         System.out.println("== 상세보기 ==");
 
-        Map<String, Object> articleMap = articleService.getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
-        if (articleMap.isEmpty()) {
+        if (article == null) {
             System.out.println(id + "번 글은 없습니다.");
             return;
         }
-
-        Article article = new Article(articleMap);
 
         System.out.println("번호 : " + article.getId());
         System.out.println("작성날짜 : " + article.getRegDate());
@@ -127,10 +130,15 @@ public class ArticleController {
             return;
         }
 
-        Map<String, Object> articleMap = articleService.getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
-        if (articleMap.isEmpty()) {
+        if (article == null) {
             System.out.println(id + "번 글은 없습니다.");
+            return;
+        }
+
+        if(article.getMemberId() != Container.session.loginedMemberId) {
+            System.out.println("권한 없음");
             return;
         }
 
